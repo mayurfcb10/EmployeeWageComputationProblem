@@ -4,15 +4,25 @@ public class EmployeeWageComputationProblem {
 
 	public static final int IS_PART_TIME = 1;
 	public static final int IS_FULL_TIME = 2;
-	//public static final int EMP_RATE_PER_HOUR = 20;
-	//public static final int NUM_OF_WORKING_DAYS = 20;
-	//public static final int MAX_HRS_IN_MONTH = 100;
 
-	public static void computeEmployeeWage(String company, int empRate, int numOfWorkingDays, int maxHrs) {
+	private final String company;
+	private final int empRatePerHour;
+	private final int numOfWorkingDays;
+	private final int maxHoursPerMonth;
+	private int totalEmpWage;
+
+	public EmployeeWageComputationProblem(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth){
+		this.company = company;
+		this.empRatePerHour = empRatePerHour;
+		this.numOfWorkingDays = numOfWorkingDays;
+		this.maxHoursPerMonth = maxHoursPerMonth;
+	}
+
+	public void computeEmployeeWage() {
 		// variables
-		int empHrs = 0, totalWorkingDays = 0, totalEmpHrs = 0;	
+		int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
 		// computation
-		while(totalEmpHrs <= maxHrs && totalWorkingDays < numOfWorkingDays) {
+		while(totalEmpHrs <= maxHoursPerMonth && totalWorkingDays < numOfWorkingDays) {
 			totalWorkingDays++;
 			int employeeCheck = (int)Math.floor(Math.random() * 10) % 3;
 			// Check whether Employee is working as a full time or part time or not working.
@@ -25,20 +35,28 @@ public class EmployeeWageComputationProblem {
 				break;
 			default:
 				empHrs = 0;
-			}
+			}	
 			totalEmpHrs += empHrs;
 			System.out.println("Day#: "+ totalWorkingDays +"Emp Hr: "+empHrs);
 		}
-		int totalEmpWage = totalEmpHrs * empRate;
-		// Total Employee Wage for the hours Employee has worked
-		System.out.println("Total Emp Wage for Company "+company+" is: "+ totalEmpWage);
+		totalEmpWage = totalEmpHrs * empRatePerHour;
 	}
 
-	public static void main(String[] args){
+	@Override
+	public String toString() {
+		return "Total Emp Wage for Company "+ company + " is: "+totalEmpWage;
+	}
+
+	public static void main(String[] args) {
 		System.out.println("Welcome to the Employee Wage Computation Problem");
 		// Compute the daily wage of the Employee of the respective company 
-		computeEmployeeWage("DMart", 20, 2, 10);
+		// Object Creation, initialising and calling compute Employee Wage function
+		EmployeeWageComputationProblem dMart = new EmployeeWageComputationProblem("DMart",15, 5, 10);
+		EmployeeWageComputationProblem jioMart = new EmployeeWageComputationProblem("JioMart",25, 10, 20);
+		dMart.computeEmployeeWage();
+		System.out.println(dMart);
 		System.out.println();
-		computeEmployeeWage("JioMart", 10, 4, 40);
+		jioMart.computeEmployeeWage();
+		System.out.println(jioMart);
 	}
 }
