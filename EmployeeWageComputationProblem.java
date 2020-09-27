@@ -1,16 +1,23 @@
 /* Welcome to the Employee Wage Computation Problem */
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class EmployeeWageComputationProblem implements IComputeEmpWage {
+public class EmployeeWageComputationProblem {
+
+
 	public static final int IS_PART_TIME = 1;
 	public static final int IS_FULL_TIME = 2;
+	private static final boolean Integer = false;
 
 	private int numOfCompany = 0;
 	private ArrayList<CompanyEmpWage> companyEmpWageArray;
+	private HashMap<Integer,Integer> dailyEmpWageMap;
 
-	public EmployeeWageComputationProblem() {
+	EmployeeWageComputationProblem() {
 		companyEmpWageArray = new ArrayList<>();
+		dailyEmpWageMap = new HashMap<>(); 
 	}
 
 	public void addCompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
@@ -21,6 +28,7 @@ public class EmployeeWageComputationProblem implements IComputeEmpWage {
 	public void computeEmpWage() {
 		for(int i = 0;i < numOfCompany; i++) {
 			companyEmpWageArray.get(i).setTotalEmpWage(this.computeEmpWage(companyEmpWageArray.get(i)));
+			computeDailyWage();
 			System.out.println(companyEmpWageArray.get(i));
 			System.out.println();
 		}
@@ -43,19 +51,25 @@ public class EmployeeWageComputationProblem implements IComputeEmpWage {
 				empHrs = 0;
 			}	
 			totalEmpHrs += empHrs;
-			System.out.println("Day#: "+ totalWorkingDays +"Emp Hr: "+empHrs);
+			dailyEmpWageMap.put(totalWorkingDays, companyEmpWage.empRatePerHour * empHrs);
 		}
 		return totalEmpHrs * companyEmpWage.empRatePerHour;
 	}
 
+	private void computeDailyWage() {
+		for(Map.Entry<Integer, Integer> dailyEmpWage : dailyEmpWageMap.entrySet() ) {
+			System.out.println("For Day "+ dailyEmpWage.getKey() +" Emp Wage is: "+dailyEmpWage.getValue());
+		}
+		
+	}	
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to the Employee Wage Computation Problem");
-		EmployeeWageProblemUC12 empWageBuilder = new EmployeeWageProblemUC12();
+		EmployeeWageComputationProblem empWageBuilder = new EmployeeWageComputationProblem();
 		empWageBuilder.addCompanyEmpWage("dMart", 20, 2, 10);
 		empWageBuilder.addCompanyEmpWage("jioMart", 10, 4, 20);
 		empWageBuilder.computeEmpWage();
 	}
 
+	
 
-}
